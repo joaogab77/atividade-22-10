@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Peças</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Gerenciar Peças</h2>
+    <form id="formPecas" onsubmit="return false;">
+        <label for="pecas_numero">Número:</label>
+        <input type="number" id="pecas_numero" name="pecas_numero" required>
+        
+        <label for="pecas_peso">Peso:</label>
+        <input type="number" id="pecas_peso" name="pecas_peso">
+        
+        <label for="pecas_cor">Cor:</label>
+        <input type="text" id="pecas_cor" name="pecas_cor" maxlength="45">
+        
+        <label for="tbl_fornecedor_for_numero">Fornecedor (Número):</label>
+        <input type="number" id="tbl_fornecedor_for_numero" name="tbl_fornecedor_for_numero">
+        
+        <button type="button" onclick="incluirPeca()">Incluir</button>
+        <button type="button" onclick="alterarPeca()">Alterar</button>
+        <button type="button" onclick="excluirPeca()">Excluir</button>
+    </form>
+    <div class="result" id="resultadoPecas"></div>
+    <br>
+    <a href="index.html">Voltar</a>
+
+    <script>
+        const pecas = [];
+
+        function incluirPeca() {
+            const numero = document.getElementById('pecas_numero').value;
+            const peso = document.getElementById('pecas_peso').value;
+            const cor = document.getElementById('pecas_cor').value;
+            const fornecedor = document.getElementById('tbl_fornecedor_for_numero').value;
+            pecas.push({ numero, peso, cor, fornecedor });
+            exibirDados('resultadoPecas', pecas);
+            document.getElementById('formPecas').reset();
+        }
+
+        function alterarPeca() {
+            const numero = document.getElementById('pecas_numero').value;
+            const index = pecas.findIndex(p => p.numero == numero);
+            if (index !== -1) {
+                pecas[index].peso = document.getElementById('pecas_peso').value;
+                pecas[index].cor = document.getElementById('pecas_cor').value;
+                pecas[index].fornecedor = document.getElementById('tbl_fornecedor_for_numero').value;
+                exibirDados('resultadoPecas', pecas);
+                document.getElementById('formPecas').reset();
+            } else {
+                alert('Peça não encontrada para alteração.');
+            }
+        }
+
+        function excluirPeca() {
+            const numero = document.getElementById('pecas_numero').value;
+            const index = pecas.findIndex(p => p.numero == numero);
+            if (index !== -1) {
+                pecas.splice(index, 1);
+                exibirDados('resultadoPecas', pecas);
+                document.getElementById('formPecas').reset();
+            } else {
+                alert('Peça não encontrada para exclusão.');
+            }
+        }
+
+        function exibirDados(idResultado, dados) {
+            const resultado = document.getElementById(idResultado);
+            resultado.innerHTML = '';
+            dados.forEach(p => {
+                resultado.innerHTML += `<p>Número: ${p.numero}, Peso: ${p.peso}, Cor: ${p.cor}, Fornecedor: ${p.fornecedor}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

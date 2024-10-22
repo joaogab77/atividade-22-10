@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Controle</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Gerenciar Controle</h2>
+    <form id="formControle" onsubmit="return false;">
+        <label for="con_numero">Número:</label>
+        <input type="number" id="con_numero" name="con_numero" required>
+        
+        <label for="con_data">Data:</label>
+        <input type="date" id="con_data" name="con_data">
+        
+        <label for="con_hora">Hora:</label>
+        <input type="time" id="con_hora" name="con_hora">
+        
+        <label for="tbl_projeto_proj_numero">Projeto (Número):</label>
+        <input type="number" id="tbl_projeto_proj_numero" name="tbl_projeto_proj_numero">
+        
+        <label for="tbl_projeto_tbl_funcionario_funci_numero">Funcionário (Número):</label>
+        <input type="number" id="tbl_projeto_tbl_funcionario_funci_numero" name="tbl_projeto_tbl_funcionario_funci_numero">
+        
+        <label for="tbl_projeto_tbl_itens_itens_numero">Item (Número):</label>
+        <input type="number" id="tbl_projeto_tbl_itens_itens_numero" name="tbl_projeto_tbl_itens_itens_numero">
+        
+        <button type="button" onclick="incluirControle()">Incluir</button>
+        <button type="button" onclick="alterarControle()">Alterar</button>
+        <button type="button" onclick="excluirControle()">Excluir</button>
+    </form>
+    <div class="result" id="resultadoControle"></div>
+    <br>
+    <a href="index.html">Voltar</a>
+
+    <script>
+        const controles = [];
+
+        function incluirControle() {
+            const numero = document.getElementById('con_numero').value;
+            const data = document.getElementById('con_data').value;
+            const hora = document.getElementById('con_hora').value;
+            const projeto = document.getElementById('tbl_projeto_proj_numero').value;
+            const funcionario = document.getElementById('tbl_projeto_tbl_funcionario_funci_numero').value;
+            const item = document.getElementById('tbl_projeto_tbl_itens_itens_numero').value;
+            controles.push({ numero, data, hora, projeto, funcionario, item });
+            exibirDados('resultadoControle', controles);
+            document.getElementById('formControle').reset();
+        }
+
+        function alterarControle() {
+            const numero = document.getElementById('con_numero').value;
+            const index = controles.findIndex(c => c.numero == numero);
+            if (index !== -1) {
+                controles[index].data = document.getElementById('con_data').value;
+                controles[index].hora = document.getElementById('con_hora').value;
+                controles[index].projeto = document.getElementById('tbl_projeto_proj_numero').value;
+                controles[index].funcionario = document.getElementById('tbl_projeto_tbl_funcionario_funci_numero').value;
+                controles[index].item = document.getElementById('tbl_projeto_tbl_itens_itens_numero').value;
+                exibirDados('resultadoControle', controles);
+                document.getElementById('formControle').reset();
+            } else {
+                alert('Controle não encontrado para alteração.');
+            }
+        }
+
+        function excluirControle() {
+            const numero = document.getElementById('con_numero').value;
+            const index = controles.findIndex(c => c.numero == numero);
+            if (index !== -1) {
+                controles.splice(index, 1);
+                exibirDados('resultadoControle', controles);
+                document.getElementById('formControle').reset();
+            } else {
+                alert('Controle não encontrado para exclusão.');
+            }
+        }
+
+        function exibirDados(idResultado, dados) {
+            const resultado = document.getElementById(idResultado);
+            resultado.innerHTML = '';
+            dados.forEach(c => {
+                resultado.innerHTML += `<p>Número: ${c.numero}, Data: ${c.data}, Hora: ${c.hora}, Projeto: ${c.projeto}, Funcionário: ${c.funcionario}, Item: ${c.item}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

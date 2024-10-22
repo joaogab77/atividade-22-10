@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Fornecedor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Gerenciar Fornecedor</h2>
+    <form id="formFornecedor" onsubmit="return false;">
+        <label for="for_numero">Número:</label>
+        <input type="number" id="for_numero" name="for_numero" required>
+        
+        <label for="for_endereco">Endereço:</label>
+        <input type="text" id="for_endereco" name="for_endereco" maxlength="100">
+        
+        <button type="button" onclick="incluirFornecedor()">Incluir</button>
+        <button type="button" onclick="alterarFornecedor()">Alterar</button>
+        <button type="button" onclick="excluirFornecedor()">Excluir</button>
+    </form>
+    <div class="result" id="resultadoFornecedor"></div>
+    <br>
+    <a href="index.html">Voltar</a>
+
+    <script>
+        const fornecedores = [];
+
+        function incluirFornecedor() {
+            const numero = document.getElementById('for_numero').value;
+            const endereco = document.getElementById('for_endereco').value;
+            fornecedores.push({ numero, endereco });
+            exibirDados('resultadoFornecedor', fornecedores);
+            document.getElementById('formFornecedor').reset();
+        }
+
+        function alterarFornecedor() {
+            const numero = document.getElementById('for_numero').value;
+            const index = fornecedores.findIndex(f => f.numero == numero);
+            if (index !== -1) {
+                fornecedores[index].endereco = document.getElementById('for_endereco').value;
+                exibirDados('resultadoFornecedor', fornecedores);
+                document.getElementById('formFornecedor').reset();
+            } else {
+                alert('Fornecedor não encontrado para alteração.');
+            }
+        }
+
+        function excluirFornecedor() {
+            const numero = document.getElementById('for_numero').value;
+            const index = fornecedores.findIndex(f => f.numero == numero);
+            if (index !== -1) {
+                fornecedores.splice(index, 1);
+                exibirDados('resultadoFornecedor', fornecedores);
+                document.getElementById('formFornecedor').reset();
+            } else {
+                alert('Fornecedor não encontrado para exclusão.');
+            }
+        }
+
+        function exibirDados(idResultado, dados) {
+            const resultado = document.getElementById(idResultado);
+            resultado.innerHTML = '';
+            dados.forEach(f => {
+                resultado.innerHTML += `<p>Número: ${f.numero}, Endereço: ${f.endereco}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

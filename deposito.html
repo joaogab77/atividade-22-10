@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Depósito</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Gerenciar Depósito</h2>
+    <form id="formDeposito" onsubmit="return false;">
+        <label for="deposit_numero">Número:</label>
+        <input type="number" id="deposit_numero" name="deposit_numero" required>
+        
+        <label for="deposit_endereco">Endereço:</label>
+        <input type="text" id="deposit_endereco" name="deposit_endereco" maxlength="100">
+        
+        <label for="tbl_pecas_pecas_numero">Peça (Número):</label>
+        <input type="number" id="tbl_pecas_pecas_numero" name="tbl_pecas_pecas_numero">
+        
+        <button type="button" onclick="incluirDeposito()">Incluir</button>
+        <button type="button" onclick="alterarDeposito()">Alterar</button>
+        <button type="button" onclick="excluirDeposito()">Excluir</button>
+    </form>
+    <div class="result" id="resultadoDeposito"></div>
+    <br>
+    <a href="index.html">Voltar</a>
+
+    <script>
+        const depositos = [];
+
+        function incluirDeposito() {
+            const numero = document.getElementById('deposit_numero').value;
+            const endereco = document.getElementById('deposit_endereco').value;
+            const pecasNumero = document.getElementById('tbl_pecas_pecas_numero').value;
+            depositos.push({ numero, endereco, pecasNumero });
+            exibirDados('resultadoDeposito', depositos);
+            document.getElementById('formDeposito').reset();
+        }
+
+        function alterarDeposito() {
+            const numero = document.getElementById('deposit_numero').value;
+            const index = depositos.findIndex(d => d.numero == numero);
+            if (index !== -1) {
+                depositos[index].endereco = document.getElementById('deposit_endereco').value;
+                depositos[index].pecasNumero = document.getElementById('tbl_pecas_pecas_numero').value;
+                exibirDados('resultadoDeposito', depositos);
+                document.getElementById('formDeposito').reset();
+            } else {
+                alert('Depósito não encontrado para alteração.');
+            }
+        }
+
+        function excluirDeposito() {
+            const numero = document.getElementById('deposit_numero').value;
+            const index = depositos.findIndex(d => d.numero == numero);
+            if (index !== -1) {
+                depositos.splice(index, 1);
+                exibirDados('resultadoDeposito', depositos);
+                document.getElementById('formDeposito').reset();
+            } else {
+                alert('Depósito não encontrado para exclusão.');
+            }
+        }
+
+        function exibirDados(idResultado, dados) {
+            const resultado = document.getElementById(idResultado);
+            resultado.innerHTML = '';
+            dados.forEach(d => {
+                resultado.innerHTML += `<p>Número: ${d.numero}, Endereço: ${d.endereco}, Peça: ${d.pecasNumero}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

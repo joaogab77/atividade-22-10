@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Projeto</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Gerenciar Projeto</h2>
+    <form id="formProjeto" onsubmit="return false;">
+        <label for="proj_numero">Número:</label>
+        <input type="number" id="proj_numero" name="proj_numero" required>
+        
+        <label for="proj_orcamento">Orçamento:</label>
+        <input type="number" id="proj_orcamento" name="proj_orcamento" step="0.01">
+        
+        <label for="proj_funcionario_funci_numero">Funcionário (Número):</label>
+        <input type="number" id="proj_funcionario_funci_numero" name="proj_funcionario_funci_numero">
+        
+        <button type="button" onclick="incluirProjeto()">Incluir</button>
+        <button type="button" onclick="alterarProjeto()">Alterar</button>
+        <button type="button" onclick="excluirProjeto()">Excluir</button>
+    </form>
+    <div class="result" id="resultadoProjeto"></div>
+    <br>
+    <a href="index.html">Voltar</a>
+
+    <script>
+        const projetos = [];
+
+        function incluirProjeto() {
+            const numero = document.getElementById('proj_numero').value;
+            const orcamento = document.getElementById('proj_orcamento').value;
+            const funcionario = document.getElementById('proj_funcionario_funci_numero').value;
+            projetos.push({ numero, orcamento, funcionario });
+            exibirDados('resultadoProjeto', projetos);
+            document.getElementById('formProjeto').reset();
+        }
+
+        function alterarProjeto() {
+            const numero = document.getElementById('proj_numero').value;
+            const index = projetos.findIndex(p => p.numero == numero);
+            if (index !== -1) {
+                projetos[index].orcamento = document.getElementById('proj_orcamento').value;
+                projetos[index].funcionario = document.getElementById('proj_funcionario_funci_numero').value;
+                exibirDados('resultadoProjeto', projetos);
+                document.getElementById('formProjeto').reset();
+            } else {
+                alert('Projeto não encontrado para alteração.');
+            }
+        }
+
+        function excluirProjeto() {
+            const numero = document.getElementById('proj_numero').value;
+            const index = projetos.findIndex(p => p.numero == numero);
+            if (index !== -1) {
+                projetos.splice(index, 1);
+                exibirDados('resultadoProjeto', projetos);
+                document.getElementById('formProjeto').reset();
+            } else {
+                alert('Projeto não encontrado para exclusão.');
+            }
+        }
+
+        function exibirDados(idResultado, dados) {
+            const resultado = document.getElementById(idResultado);
+            resultado.innerHTML = '';
+            dados.forEach(p => {
+                resultado.innerHTML += `<p>Número: ${p.numero}, Orçamento: ${p.orcamento}, Funcionário: ${p.funcionario}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

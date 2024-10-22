@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Funcionário</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Gerenciar Funcionário</h2>
+    <form id="formFuncionario" onsubmit="return false;">
+        <label for="funci_numero">Número:</label>
+        <input type="number" id="funci_numero" name="funci_numero" required>
+        
+        <label for="funci_salario">Salário:</label>
+        <input type="number" id="funci_salario" name="funci_salario">
+        
+        <label for="funci_telefone">Telefone:</label>
+        <input type="text" id="funci_telefone" name="funci_telefone">
+        
+        <label for="funci_departamento_dep_numero">Departamento (Número):</label>
+        <input type="number" id="funci_departamento_dep_numero" name="funci_departamento_dep_numero">
+        
+        <button type="button" onclick="incluirFuncionario()">Incluir</button>
+        <button type="button" onclick="alterarFuncionario()">Alterar</button>
+        <button type="button" onclick="excluirFuncionario()">Excluir</button>
+    </form>
+    <div class="result" id="resultadoFuncionario"></div>
+    <br>
+    <a href="index.html">Voltar</a>
+
+    <script>
+        const funcionarios = [];
+
+        function incluirFuncionario() {
+            const numero = document.getElementById('funci_numero').value;
+            const salario = document.getElementById('funci_salario').value;
+            const telefone = document.getElementById('funci_telefone').value;
+            const departamento = document.getElementById('funci_departamento_dep_numero').value;
+            funcionarios.push({ numero, salario, telefone, departamento });
+            exibirDados('resultadoFuncionario', funcionarios);
+            document.getElementById('formFuncionario').reset();
+        }
+
+        function alterarFuncionario() {
+            const numero = document.getElementById('funci_numero').value;
+            const index = funcionarios.findIndex(f => f.numero == numero);
+            if (index !== -1) {
+                funcionarios[index].salario = document.getElementById('funci_salario').value;
+                funcionarios[index].telefone = document.getElementById('funci_telefone').value;
+                funcionarios[index].departamento = document.getElementById('funci_departamento_dep_numero').value;
+                exibirDados('resultadoFuncionario', funcionarios);
+                document.getElementById('formFuncionario').reset();
+            } else {
+                alert('Funcionário não encontrado para alteração.');
+            }
+        }
+
+        function excluirFuncionario() {
+            const numero = document.getElementById('funci_numero').value;
+            const index = funcionarios.findIndex(f => f.numero == numero);
+            if (index !== -1) {
+                funcionarios.splice(index, 1);
+                exibirDados('resultadoFuncionario', funcionarios);
+                document.getElementById('formFuncionario').reset();
+            } else {
+                alert('Funcionário não encontrado para exclusão.');
+            }
+        }
+
+        function exibirDados(idResultado, dados) {
+            const resultado = document.getElementById(idResultado);
+            resultado.innerHTML = '';
+            dados.forEach(f => {
+                resultado.innerHTML += `<p>Número: ${f.numero}, Salário: ${f.salario}, Telefone: ${f.telefone}, Departamento: ${f.departamento}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>

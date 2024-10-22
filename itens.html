@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Itens</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Gerenciar Itens</h2>
+    <form id="formItens" onsubmit="return false;">
+        <label for="itens_numero">Número:</label>
+        <input type="number" id="itens_numero" name="itens_numero" required>
+        
+        <label for="tbl_pecas_pecas_numero">Peça (Número):</label>
+        <input type="number" id="tbl_pecas_pecas_numero" name="tbl_pecas_pecas_numero">
+        
+        <button type="button" onclick="incluirItem()">Incluir</button>
+        <button type="button" onclick="alterarItem()">Alterar</button>
+        <button type="button" onclick="excluirItem()">Excluir</button>
+    </form>
+    <div class="result" id="resultadoItens"></div>
+    <br>
+    <a href="index.html">Voltar</a>
+
+    <script>
+        const itens = [];
+
+        function incluirItem() {
+            const numero = document.getElementById('itens_numero').value;
+            const pecasNumero = document.getElementById('tbl_pecas_pecas_numero').value;
+            itens.push({ numero, pecasNumero });
+            exibirDados('resultadoItens', itens);
+            document.getElementById('formItens').reset();
+        }
+
+        function alterarItem() {
+            const numero = document.getElementById('itens_numero').value;
+            const index = itens.findIndex(i => i.numero == numero);
+            if (index !== -1) {
+                itens[index].pecasNumero = document.getElementById('tbl_pecas_pecas_numero').value;
+                exibirDados('resultadoItens', itens);
+                document.getElementById('formItens').reset();
+            } else {
+                alert('Item não encontrado para alteração.');
+            }
+        }
+
+        function excluirItem() {
+            const numero = document.getElementById('itens_numero').value;
+            const index = itens.findIndex(i => i.numero == numero);
+            if (index !== -1) {
+                itens.splice(index, 1);
+                exibirDados('resultadoItens', itens);
+                document.getElementById('formItens').reset();
+            } else {
+                alert('Item não encontrado para exclusão.');
+            }
+        }
+
+        function exibirDados(idResultado, dados) {
+            const resultado = document.getElementById(idResultado);
+            resultado.innerHTML = '';
+            dados.forEach(i => {
+                resultado.innerHTML += `<p>Número: ${i.numero}, Peça: ${i.pecasNumero}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>
